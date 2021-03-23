@@ -229,10 +229,7 @@ class RoleManagement(commands.Cog):
             if query["above"] and top_role <= query["above"]:
                 return False
 
-            if query["below"] and top_role >= query["below"]:
-                return False
-
-            return True
+            return not query["below"] or top_role < query["below"]
 
         members = {m for m in members if mfilter(m)}
 

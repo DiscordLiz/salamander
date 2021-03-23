@@ -129,9 +129,11 @@ def _ev_roll_dice_keep_best(quant, sides, keep):
     for k in prange(0, keep):
         middle_sum = 0
         for j in prange(1, sides + 1):
-            inner_sum = 0
-            for i in prange(0, k + 1):
-                inner_sum += _inner_flattened_cdf_math(quant, sides, i, j, k)
+            inner_sum = sum(
+                _inner_flattened_cdf_math(quant, sides, i, j, k)
+                for i in prange(0, k + 1)
+            )
+
             middle_sum += j * inner_sum
         outermost_sum += middle_sum
     return outermost_sum
@@ -144,9 +146,11 @@ def _ev_roll_dice_keep_worst(quant, sides, keep):
     for k in prange(1, keep + 1):
         middle_sum = 0
         for j in prange(1, sides + 1):
-            inner_sum = 0
-            for i in prange(0, quant - k + 1):
-                inner_sum += _inner_flattened_cdf_math(quant, sides, i, j, k)
+            inner_sum = sum(
+                _inner_flattened_cdf_math(quant, sides, i, j, k)
+                for i in prange(0, quant - k + 1)
+            )
+
             middle_sum += j * inner_sum
         outermost_sum += middle_sum
     return outermost_sum
